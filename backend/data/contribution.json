@@ -1,0 +1,20 @@
+{
+  "users": {
+    "123": {
+      "contributionType": "percentage",
+      "contributionValue": 10,
+      "ytdContributions": 5000,
+      "ytdPaychecks": 24,
+      "annualSalary": 60000,
+      "payFrequency": "biweekly"
+    },
+    "456": {
+      "contributionType": "fixed",
+      "contributionValue": 200,
+      "ytdContributions": 4800,
+      "ytdPaychecks": 24,
+      "annualSalary": 75000,
+      "payFrequency": "biweekly"
+    }
+  }
+}

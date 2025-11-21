@@ -1,0 +1,194 @@
+openapi: 3.0.0
+info:
+  title: Contribution Management API
+  description: API for managing user contribution settings and viewing YTD data
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3010
+
+paths:
+  /api/users/{userId}/contribution/settings:
+    get:
+      description: Retrieves the current contribution type and value for a specific user
+      operationId: getContributionSettings
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: Unique identifier for the user
+          schema:
+            type: string
+            pattern: '^[0-9]+$'
+            example: "123"
+      responses:
+        '200':
+          description: Successfully retrieved contribution settings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContributionSettings'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+    put:
+      description: Updates the contribution type and value for a specific user
+      operationId: updateContributionSettings
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: Unique identifier for the user
+          schema:
+            type: string
+            pattern: '^[0-9]+$'
+            example: "123"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContributionSettings'
+      responses:
+        '200':
+          description: Successfully updated contribution settings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContributionSettings'
+        '400':
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/users/{userId}/contribution/ytd:
+    get:
+      description: Retrieves year-to-date contribution statistics
+      operationId: getContributionYTD
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: Unique identifier for the user
+          schema:
+            type: string
+            pattern: '^[0-9]+$'
+            example: "123"
+      responses:
+        '200':
+          description: Successfully retrieved YTD data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContributionYTD'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    ContributionSettings:
+      type: object
+      required:
+        - contributionType
+        - contributionValue
+      properties:
+        contributionType:
+          type: string
+          enum: [fixed, percentage]
+          description: Type of contribution
+          example: "percentage"
+        contributionValue:
+          type: number
+          description: Contribution amount
+          example: 5
+    
+    ContributionYTD:
+      type: object
+      required:
+        - ytdContributions
+        - ytdPaychecks
+        - currentYearStart
+        - mockData
+      properties:
+        ytdContributions:
+          type: number
+          description: Total contributions year-to-date
+          example: 5000
+        ytdPaychecks:
+          type: integer
+          description: Number of paychecks year-to-date
+          example: 24
+        currentYearStart:
+          type: string
+          format: date
+          description: Start date of current year
+          example: "2025-01-01"
+        mockData:
+          type: object
+          required:
+            - annualSalary
+            - payFrequency
+          properties:
+            annualSalary:
+              type: number
+              description: Mock annual salary
+              example: 60000
+            payFrequency:
+              type: string
+              enum: [weekly, biweekly, semimonthly, monthly]
+              description: Pay frequency
+              example: "biweekly"
+              
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              description: Error code
+              example: "USER_NOT_FOUND"
+            message:
+              type: string
+              description: Error message
+              example: "User with ID 123 not found"
