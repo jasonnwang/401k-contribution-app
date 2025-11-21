@@ -102,7 +102,16 @@ async function updateSettings(userId, settings) {
         }
       };
     }
-  }
+    if (contributionValue > 10000) {
+      return {
+        success: false,
+        error: {
+          code: 'INVALID_CONTRIBUTION_VALUE',
+          message: 'Contribution value cannot exceed $10,000 for fixed type'
+        }
+      };
+    }
+  } 
 
   // Update user settings
   user.contributionType = contributionType;
