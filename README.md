@@ -71,6 +71,16 @@ The frontend will automatically open at `http://localhost:3000`
 
 The application should now be running. You can interact with the UI at `http://localhost:3000` or test the API directly at `http://localhost:3010/api/docs`.
 
+## Running Tests
+
+The backend includes a comprehensive test suite covering all API endpoints.
+
+**Run tests:**
+```bash
+cd backend
+npm test
+```
+
 ## Testing the Application
 
 ### Default Test User
@@ -81,7 +91,7 @@ The app comes pre-configured with test user ID: `123`
 - Annual Salary: $60,000
 - Pay Frequency: Biweekly
 
-### What You Can Test
+### What You Can Do
 
 1. Toggle between percentage and fixed dollar contributions
 2. Adjust contribution amounts using the slider or text input
