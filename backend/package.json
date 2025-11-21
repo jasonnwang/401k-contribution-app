@@ -1,19 +1,24 @@
 {
-  "name": "401k-backend",
+  "name": "contribution-backend",
   "version": "1.0.0",
+  "description": "Backend API for contribution management",
   "type": "module",
-  "description": "401(k) Contribution Manager Backend API",
+  "main": "src/server.js",
+  "author": "",
   "dependencies": {
     "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "express-openapi-validator": "^5.0.0",
+    "express-openapi-validator": "^5.1.2",
     "swagger-ui-express": "^5.0.0",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "cors": "*"
   },
   "devDependencies": {
-    "nodemon": "^3.0.0"
+    "nodemon": "*",
+    "vitest": "*",
+    "supertest": "*"
   },
-  "scripts": {
-    "start": "nodemon src/server.js"
+   "scripts": {
+    "start": "nodemon src/server.js",
+    "test": "vitest run"
   }
 }

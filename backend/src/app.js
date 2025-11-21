@@ -17,7 +17,6 @@ const apiSpec = path.join(__dirname, '../api/openapi.yaml');
 const apidoc = yaml.load(fs.readFileSync(apiSpec, 'utf8'));
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(apidoc));
 
-// Middleware to parse JSON bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -25,7 +24,6 @@ app.use(cors({
   origin: 'http://localhost:3000' // your frontend origin
 }));
 
-// OpenAPI validation middleware
 app.use(
   OpenApiValidator.middleware({
     apiSpec: apiSpec,
