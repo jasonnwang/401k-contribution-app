@@ -1,8 +1,8 @@
 {
   "users": {
     "123": {
-      "contributionType": "fixed",
-      "contributionValue": 100000000,
+      "contributionType": "percentage",
+      "contributionValue": 5,
       "ytdContributions": 5000,
       "ytdPaychecks": 24,
       "annualSalary": 60000,
