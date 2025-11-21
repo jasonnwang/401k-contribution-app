@@ -127,6 +127,31 @@ const ContributionManager = () => {
     }
   };
 
+  // Calculate gross paycheck amount
+  const calculateGrossPaycheck = () => {
+    if (!ytdData) return 0;
+
+    const { annualSalary, payFrequency } = ytdData.mockData;
+    let paychecksPerYear = 26; // default biweekly
+
+    switch (payFrequency) {
+      case 'weekly':
+        paychecksPerYear = 52;
+        break;
+      case 'biweekly':
+        paychecksPerYear = 26;
+        break;
+      case 'semimonthly':
+        paychecksPerYear = 24;
+        break;
+      case 'monthly':
+        paychecksPerYear = 12;
+        break;
+    }
+
+    return annualSalary / paychecksPerYear;
+  };
+
   // Calculate per-paycheck contribution
   const calculatePerPaycheckContribution = () => {
     if (!ytdData) return 0;
@@ -192,18 +217,14 @@ const ContributionManager = () => {
     const currentAge = 30; // Assume user is 30 years old
     const retirementAge = 65;
     const yearsToRetirement = retirementAge - currentAge;
+    const annualContribution = calculateAnnualContribution();
     const annualReturn = 0.07; // 7% annual return assumption
 
-    // Annual contribution based on current settings
-    const annualContribution = calculateAnnualContribution();
-
-    // Include already saved contributions (YTD) as starting balance
-    const currentBalance = ytdData.ytdContributions || 0;
-
-    // Future value = existing balance grown + future contributions
+    // Future value of annuity formula
     const futureValue =
-        currentBalance * Math.pow(1 + annualReturn, yearsToRetirement) +
-        annualContribution * ((Math.pow(1 + annualReturn, yearsToRetirement) - 1) / annualReturn);
+      annualContribution *
+      ((Math.pow(1 + annualReturn, yearsToRetirement) - 1) / annualReturn);
+
     // 4% withdrawal rule for retirement
     const monthlyInRetirement = (futureValue * 0.04) / 12;
 
@@ -216,6 +237,7 @@ const ContributionManager = () => {
   const projection = calculateRetirementProjection();
   const perPaycheckContribution = calculatePerPaycheckContribution();
   const annualContribution = calculateAnnualContribution();
+  const grossPaycheck = calculateGrossPaycheck();
 
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('en-US', {
@@ -448,7 +470,7 @@ const ContributionManager = () => {
 
               <Box sx={{ mb: 2 }}>
                 <Typography variant="body2" color="text.secondary">
-                  Paychecks This Year
+                  Paychecks Contributed This Year
                 </Typography>
                 <Typography variant="h6">
                   {ytdData && ytdData.ytdPaychecks}
@@ -474,14 +496,24 @@ const ContributionManager = () => {
               </Box>
               <Divider sx={{ mb: 2 }} />
 
-              <Box sx={{ mb: 2 }}>
-                <Typography variant="body2" color="text.secondary">
-                  Annual Salary
-                </Typography>
-                <Typography variant="h6">
-                  {ytdData && formatCurrency(ytdData.mockData.annualSalary)}
-                </Typography>
-              </Box>
+              <Grid container spacing={2} sx={{ mb: 2 }}>
+                <Grid item xs={6}>
+                  <Typography variant="body2" color="text.secondary">
+                    Annual Salary
+                  </Typography>
+                  <Typography variant="h6">
+                    {ytdData && formatCurrency(ytdData.mockData.annualSalary)}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="body2" color="text.secondary">
+                    Gross Paycheck
+                  </Typography>
+                  <Typography variant="h6">
+                    {ytdData && formatCurrencyDecimal(grossPaycheck)}
+                  </Typography>
+                </Grid>
+              </Grid>
 
               <Box>
                 <Typography variant="body2" color="text.secondary">
