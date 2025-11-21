@@ -2,7 +2,7 @@
   "users": {
     "123": {
       "contributionType": "percentage",
-      "contributionValue": 10,
+      "contributionValue": 5,
       "ytdContributions": 5000,
       "ytdPaychecks": 24,
       "annualSalary": 60000,
